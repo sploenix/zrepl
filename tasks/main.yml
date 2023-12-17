@@ -1,0 +1,23 @@
+---
+- block:
+    - ansible.builtin.import_tasks: repo.yml
+      tags:
+        - repo
+        - repository
+
+    - name: "Install zrepl"
+      ansible.builtin.package:
+        name: zrepl
+        update_cache: true
+        state: latest
+      tags: install
+
+    - name: "Configure zrepl"
+      ansible.builtin.template:
+        dest: /etc/zrepl/zrepl.yml
+        src: zrepl.yml.j2
+      notify: "Restart zrepl"
+      tags:
+        - config
+        - configure
+  when: zrepl is defined

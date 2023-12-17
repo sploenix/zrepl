@@ -1,0 +1,7 @@
+---
+zrepl_defaults:
+  global:
+    logging:
+      - type: syslog
+        format: human
+        level: warn

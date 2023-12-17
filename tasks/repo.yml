@@ -1,0 +1,24 @@
+---
+- name: "Configure zrepl repository on RHEL"
+  ansible.builtin.yum_repository:
+    name: zrepl
+    description: ZREPL repository
+    file: zrepl
+    baseurl: https://zrepl.cschwarz.com/rpm/repo
+    gpgkey: https://zrepl.cschwarz.com/rpm/rpm-key.asc
+    gpgcheck: true
+  when: ansible_os_family == 'RedHat'
+
+- block:
+    - name: "Import zrepl apt key on Debian"
+      ansible.builtin.apt_key:
+        url: https://zrepl.cschwarz.com/apt/apt-key.asc
+        state: present
+
+    - name: "Configure zrepl repository on Debian"
+      ansible.builtin.apt_repository:
+        repo: "deb https://zrepl.cschwarz.com/apt/debian {{ ansible_distribution_release }} main"
+        state: present
+        filename: zrepl
+        update_cache: true
+  when: ansible_os_family == 'Debian'

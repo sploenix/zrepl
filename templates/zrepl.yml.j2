@@ -1,0 +1,8 @@
+---
+{% if zrepl.jobs | d(false) %}
+global:
+  {{ ((zrepl.global | d({})) | combine(zrepl_defaults.global)) | to_nice_yaml(indent=2)|indent(2) }}
+
+jobs:
+  {{ zrepl.jobs | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
