@@ -1,15 +1,15 @@
 ---
-- block:
-    - ansible.builtin.import_tasks: repo.yml
-      tags:
-        - repo
-        - repository
-
-    - name: "Install zrepl"
-      ansible.builtin.package:
-        name: zrepl
-        update_cache: true
-        state: latest
+- name: "Configure zrepl when it is defined in inventory"
+  when: zrepl is defined
+  block:
+    - name: "Install required packages"
+      vars:
+        packages_present: "{{ packages_present_zrepl }}"
+        repos:
+          - zrepl
+        call_from: "role zrepl"
+      ansible.builtin.import_role:
+        name: "{{ __fqcn_packages_role__ }}"
       tags: install
 
     - name: "Configure zrepl"
@@ -20,4 +20,3 @@
       tags:
         - config
         - configure
-  when: zrepl is defined

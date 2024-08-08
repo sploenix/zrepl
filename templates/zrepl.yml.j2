@@ -1,4 +1,5 @@
 ---
+# {{ role_managed }}
 {% if zrepl.jobs | d(false) %}
 global:
   {{ ((zrepl.global | d({})) | combine(zrepl_defaults.global)) | to_nice_yaml(indent=2)|indent(2) }}
